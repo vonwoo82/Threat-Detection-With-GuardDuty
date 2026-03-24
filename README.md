@@ -12,6 +12,7 @@ GuardDuty is an AI-powered threat detection service, which means it is designed 
 <img width="1129" height="371" alt="aws-security-guardduty_n1o2p3q4" src="https://github.com/user-attachments/assets/eab0d4fd-b5d8-4089-a07e-89a3032f7000" />
 
 SQL Injection
+
 The first attack I performed on the web app is SQL injection, which means injecting malicious SQL code that manipulates a result from our web app. SQL injection is a security risk because it can let attackers bypass logins, or delete/edit data. 
 
 My SQL injection attack involved entering the code '' or 1=1;--' into the email field of the web app's login page. This means the login query will always evaluate to true (i.e. our database is manipulated into telling our web app this line exists). 
@@ -26,7 +27,20 @@ To run command injection, I entered JavaScript code in the username field of the
 
 <img width="570" height="599" alt="aws-security-guardduty_t3u4v5w6" src="https://github.com/user-attachments/assets/38008b85-9125-44fc-91a6-bfb66336ca40" />
 
+
 Attack Verification
 
 To verify the attack's success, we visited the publicly exposed credentials file (i.e credentials.json). This page showed us access keys that can represent our EC2 instances's access to the developers AWS environments.  we can use those keys to get the same level of access
+
+<img width="2782" height="926" alt="aws-security-guardduty_x7y8z9a0" src="https://github.com/user-attachments/assets/10b7fd70-7c56-4ad7-900a-0c6b0f8bfd3a" />
+
+Using CloudShell for Advanced Attacks
+
+The attack continues in CloudShell, because this is a Command-line  tool we can use to run AWS commands that uses the credentials I've stolen. CloudShell is now our medium for doing suspicious things like stealing data from an S3 Bucket. 
+
+In CloudShell, I used wget to download the exposed credentials file into our CloudShell environment. Next, we ran a command using cat and jq to read the downloaded file and format it nicely so the credentials (in JSON) are easy to understand. 
+
+I then set up a new profile using all of the stolen credentials. I had to create a new profile because the hacker doesn't inherently have access to the victim's AWS environment. They'll need to use the profile to switch permission settings. 
+
+<img width="1406" height="254" alt="aws-security-guardduty_j9k0l1m2" src="https://github.com/user-attachments/assets/69ec16f9-3e9f-47ef-9923-1606c31e359d" />
 
