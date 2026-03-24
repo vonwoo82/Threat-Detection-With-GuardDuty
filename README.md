@@ -19,6 +19,14 @@ My SQL injection attack involved entering the code '' or 1=1;--' into the email 
 <img width="1412" height="571" alt="aws-security-guardduty_h1i2j3k4" src="https://github.com/user-attachments/assets/c5c895c9-2974-45c1-bd11-437f81e261da" />
 
 Command Injection
+
 Next, I used command injection, which is a technique that manipulates the web app's web server to run code that has been entered e.g. in a form. The Juice Shop web app is vulnerable to this because it does not sanitize user inputs i.e. does not block scripts. 
 
 To run command injection, I entered JavaScript code in the username field of the web app's admin console.  The script will tell our web server to expose the server's IAM credentials and save them in a publicly accessible JSON file. 
+
+<img width="570" height="599" alt="aws-security-guardduty_t3u4v5w6" src="https://github.com/user-attachments/assets/38008b85-9125-44fc-91a6-bfb66336ca40" />
+
+Attack Verification
+
+To verify the attack's success, we visited the publicly exposed credentials file (i.e credentials.json). This page showed us access keys that can represent our EC2 instances's access to the developers AWS environments.  we can use those keys to get the same level of access
+
