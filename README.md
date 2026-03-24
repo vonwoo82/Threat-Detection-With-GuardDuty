@@ -30,9 +30,8 @@ To run command injection, I entered JavaScript code in the username field of the
 
 Attack Verification
 
-To verify the attack's success, we visited the publicly exposed credentials file (i.e credentials.json). This page showed us access keys that can represent our EC2 instances's access to the developers AWS environments.  we can use those keys to get the same level of access
+To verify the attack's success, we visited the publicly exposed credentials file (i.e credentials.json). This page showed us access keys that can represent our EC2 instances's access to the developers AWS environments.  We can use those keys to get the same level of access
 
-<img width="2782" height="926" alt="aws-security-guardduty_x7y8z9a0" src="https://github.com/user-attachments/assets/10b7fd70-7c56-4ad7-900a-0c6b0f8bfd3a" />
 
 Using CloudShell for Advanced Attacks
 
@@ -43,4 +42,24 @@ In CloudShell, I used wget to download the exposed credentials file into our Clo
 I then set up a new profile using all of the stolen credentials. I had to create a new profile because the hacker doesn't inherently have access to the victim's AWS environment. They'll need to use the profile to switch permission settings. 
 
 <img width="1406" height="254" alt="aws-security-guardduty_j9k0l1m2" src="https://github.com/user-attachments/assets/69ec16f9-3e9f-47ef-9923-1606c31e359d" />
+
+GuardDuty's Findings
+
+After performing the attack, GuardDuty reported the finding within 15 minutes. Findings are notifications from GuardDuty that something suspicious has happened, and they give you additional details about the who/what/when of the attack. 
+
+GuardDuty's finding was called UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.InsideAWS, which means credentials belonging to an EC2 instance  were being used in another account. Anomaly detection was used because this was unusual behavior. 
+
+GuardDuty's detailed finding reported that an S3 bucket was affected; the action that was done using the stolen credentials (GetObject); and the EC2 instance whose credentials were leaked. The IP address + location of the actor was also available. 
+
+<img width="831" height="638" alt="aws-security-guardduty_v1w2x3y4" src="https://github.com/user-attachments/assets/b336bec1-c9ea-4c21-86a0-20d766be2141" />
+
+Malware Protection
+
+For the project extentions, I enabled Malware protection for S3. Malware is file that contains threat e.g. opening the file will cause a data breach or deletion of resources. 
+
+To test Malware Protection, I've uploaded and EICAR test file into a protected bucket. The uploaded file won't actually cause damage because the test file is only designed to alert antivirus software. 
+
+Once we uploaded the malware, GuardDuty instantly triggered a finding called Object:S3/MaliciousFile. This verified that GuardDuty could successfully detect malware. It also mentioned that the threat type is EICAR-Test-File (Which means its not a virus). 
+
+<img width="776" height="878" alt="aws-security-guardduty_sm42x3y4" src="https://github.com/user-attachments/assets/a532c4e3-78e2-496d-a25b-e54ae4fbea99" />
 
